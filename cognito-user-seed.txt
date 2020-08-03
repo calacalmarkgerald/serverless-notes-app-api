@@ -1,0 +1,10 @@
+aws cognito-idp sign-up \
+  --region ap-southeast-1 \
+  --client-id 7bpcuo3v3eo78dm3fp0hlref5e \
+  --username calacalmarkgerald@gmail.com \
+  --password L@ncelot006
+  
+aws cognito-idp admin-confirm-sign-up \
+  --region ap-southeast-1 \
+  --user-pool-id ap-southeast-1_Wz7Wy5ccY \
+  --username devnerd123@gmail.com
