@@ -1,28 +1,21 @@
-import * as uuid from 'uuid';
 import response, { RESPONSE_TYPE } from './libs/response';
-import dynamodb from './libs/dynamodb';
+import config from './config';
+import NotesService from './services/NoteService';
+
+const noteService = new NotesService(config);
 
 export async function main(event, context) {
   const { body, requestContext } = event;
   const data = JSON.parse(body);
 
-  //add validation here in the parsed data
-
-  const params = {
-    TableName: process.env.tableName,
-    Item: {
-      userId: requestContext.identity.cognitoIdentityId,
-      noteId: uuid.v1(),
-      attachment: data.attachment,
-      createdAt: Date.now(),
-    },
-  };
-
   try {
-    const result = await dynamodb.put(params);
+    const result = await noteService.create({
+      attachment: data.attachment,
+      userId: requestContext.identity.cognitoIdentityId,
+    });
     console.log(result);
 
-    return response(RESPONSE_TYPE.SUCCESS, params.Item);
+    return response(RESPONSE_TYPE.SUCCESS, result);
   } catch (error) {
     console.log(error);
 
